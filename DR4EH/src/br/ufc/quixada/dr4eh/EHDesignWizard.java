@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.designwizard.design.ClassNode;
 import org.designwizard.design.MethodNode;
+import org.designwizard.design.PackageNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
@@ -29,7 +30,8 @@ public class EHDesignWizard {
 		//module.add(Controller.class);
 
 		//if (ehdw.canOnlySignal(module, CTLException.class)) {
-		if (ehdw.canSignal(module, CTLException.class)) {
+		//if (ehdw.canSignal(module, CTLException.class)) {
+		if (ehdw.cannotSignal(module, CTLException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -110,6 +112,40 @@ public class EHDesignWizard {
 		}
 		
 		return canSignal;
+	}
+	
+	public boolean cannotSignal(Module module, Class<?> exception){
+		boolean cannotSignal = true;
+		
+		Set<ClassNode> classNodes = new HashSet<ClassNode>();
+		if (module.hasClassTypes()) {
+			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+		}
+
+		if (module.hasPackageNames()) {
+			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+		}
+
+		System.out.println("Class Node Name " + classNodes);
+		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
+		allClassNodes.removeAll(classNodes);
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		}
+		for(ClassNode node: classNodes){
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)) {
+					cannotSignal = false;
+				}
+			}
+			
+		}
+		
+		return cannotSignal;
 	}
 
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
