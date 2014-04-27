@@ -12,6 +12,7 @@ import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
 import br.ufc.quixada.control.Controller;
+import br.ufc.quixada.dao.ContatoDAO;
 import br.ufc.quixada.exception.CTLException;
 import br.ufc.quixada.exception.DAOException;
 
@@ -26,12 +27,13 @@ public class EHDesignWizard {
 		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
-		module.add("br.ufc.quixada.control");
-		//module.add(Controller.class);
+		//module.add("br.ufc.quixada.control");
+		module.add(ContatoDAO.class);
 
 		//if (ehdw.canOnlySignal(module, CTLException.class)) {
-		//if (ehdw.canSignal(module, CTLException.class)) {
-		if (ehdw.cannotSignal(module, CTLException.class)) {
+		//if (ehdw.OnlycanSignal(module, CTLException.class)) {
+		//if (ehdw.cannotSignal(module, CTLException.class)) {
+		if (ehdw.mustSignal(module, DAOException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -61,7 +63,6 @@ public class EHDesignWizard {
 		
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
-		//System.out.println(classNodes);
 		ClassNode exceptionClassNode;
 		try {
 			exceptionClassNode = designWizard.getClass(exception);
@@ -80,8 +81,10 @@ public class EHDesignWizard {
 
 		return canOnlySignal;
 	}
-	public boolean canSignal(Module module, Class<?> exception){
-		boolean canSignal = true;
+	
+	
+	public boolean OnlycanSignal(Module module, Class<?> exception){
+		boolean OnlycanSignal = true;
 		
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
@@ -92,7 +95,7 @@ public class EHDesignWizard {
 			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
 		}
 
-		System.out.println("Class Node Name " + classNodes);
+		
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
 		ClassNode exceptionClassNode;
@@ -105,14 +108,15 @@ public class EHDesignWizard {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
 				if (method.getThrownExceptions().contains(exceptionClassNode) && method.getPackage()!= classNodes) {
-					canSignal = false;
+					OnlycanSignal = false;
 				}
 			}
 			
 		}
 		
-		return canSignal;
+		return OnlycanSignal;
 	}
+	
 	
 	public boolean cannotSignal(Module module, Class<?> exception){
 		boolean cannotSignal = true;
@@ -126,7 +130,7 @@ public class EHDesignWizard {
 			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
 		}
 
-		System.out.println("Class Node Name " + classNodes);
+		
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
 		ClassNode exceptionClassNode;
@@ -147,7 +151,39 @@ public class EHDesignWizard {
 		
 		return cannotSignal;
 	}
+	
+	
+	public boolean mustSignal(Module module, Class<?> exception){
+		boolean mustSignal = false;
+		
+		Set<ClassNode> classNodes = new HashSet<ClassNode>();
+		if (module.hasClassTypes()) {
+			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+		}
 
+		if (module.hasPackageNames()) {
+			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+		}
+		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
+		allClassNodes.removeAll(classNodes);
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		}
+		for(ClassNode node: classNodes){
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)) {
+					mustSignal = true;
+				}
+			}
+			
+		}
+		
+		return mustSignal;
+	}
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (Class<?> classType : classTypes) {
@@ -159,7 +195,6 @@ public class EHDesignWizard {
 		}
 		return classNodes;
 	}
-
 	private Set<ClassNode> convertPackageNamesToClassNodes(Set<String> packageNames) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (String packageName : packageNames) {
