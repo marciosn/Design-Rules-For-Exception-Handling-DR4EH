@@ -3,7 +3,9 @@ package br.ufc.quixada.dr4eh;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.designwizard.design.ClassNode;
@@ -28,17 +30,20 @@ public class EHDesignWizard {
 		module.add("br.ufc.quixada.control");
 		//module.add(ContatoDAO.class);
 
-		//if (ehdw.canOnlySignal(module, DAOException.class)) {
+		//if (ehdw.canOnlySignal(module, CTLException.class)) {
 		//if (ehdw.OnlycanSignal(module, DAOException.class)) {
 		//if (ehdw.cannotSignal(module, DAOException.class)) {
 		//if (ehdw.mustSignal(module, DAOException.class)) {
 		
+		//if (ehdw.canOnlyHandle(module, CTLException.class)) {
 		//if (ehdw.OnlycanHandle(module, CTLException.class)) {
-		//if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		//if (ehdw.cannotHandle(module, DAOException.class)) {
 		//if (ehdw.mustHandle(module, CTLException.class)) {
 			
-		if (ehdw.mustRaise(module, DAOException.class)) {
+		//if (ehdw.canOnlyRaise(module, CTLException.class)) {
+		//if (ehdw.OnlycanRaise(module, DAOException.class)) {
+		//if (ehdw.cannotRaise(module, CTLException.class)) {
+		if (ehdw.mustRaise(module, CTLException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -58,7 +63,6 @@ public class EHDesignWizard {
  */
 	public boolean canOnlySignal(Module module, Class<?> exception) {
 		boolean canOnlySignal = false;
-
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
 			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
@@ -74,11 +78,16 @@ public class EHDesignWizard {
 		} catch (InexistentEntityException iee) {
 			throw new RuntimeException(iee);
 		} 
+		
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods){
+				Set<ClassNode> e = method.getThrownExceptions();
+				if(e.size() > 1){
+					return false;
+				}
 				if (method.getThrownExceptions().contains(exceptionClassNode)) {
-					canOnlySignal = true;
+					canOnlySignal = true;			
 				}
 			}
 		}
@@ -212,6 +221,10 @@ public class EHDesignWizard {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
+				Set<ClassNode> e = method.getCatchedExceptions();
+				if(e.size() > 1){
+					return false;
+				}
 				if (method.getCatchedExceptions().contains(exceptionClassNode)) {
 					canOnlyHandle = true;
 				}
@@ -322,10 +335,72 @@ public class EHDesignWizard {
 	
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES RAISE****************************************
+	 * ****************************************RULES RAISE*****************************************
 	 * ********************************************************************************************
 	 */
-	
+	public boolean canOnlyRaise(Module module, Class<?> exception) {
+		boolean canOnlyRaise = false;
+
+		Set<ClassNode> classNodes = new HashSet<ClassNode>();
+		if (module.hasClassTypes()) {
+			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+		}
+		if (module.hasPackageNames()) {
+			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+		}
+		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
+		allClassNodes.removeAll(classNodes);
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		} 
+		for (ClassNode node : classNodes) {
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods){
+				Set<ClassNode> e = method.getThrownExceptions();
+				if(e.size() > 1)
+					return false;
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false) {
+					canOnlyRaise = true;
+				}
+			}
+		}
+		return canOnlyRaise;
+	}
+	public boolean OnlycanRaise(Module module, Class<?> exception){
+		boolean OnlycanRaise = true;
+		
+		Set<ClassNode> classNodes = new HashSet<ClassNode>();
+		if (module.hasClassTypes()) {
+			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+		}
+		if (module.hasPackageNames()) {
+			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+		}
+		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
+		allClassNodes.removeAll(classNodes);
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		}
+		for(ClassNode node: allClassNodes){
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false) {
+					OnlycanRaise = false;
+				}
+			}
+			
+		}
+		
+		return OnlycanRaise;
+	}
 	public boolean mustRaise(Module module, Class<?> exception){
 		boolean mustRaise = false;
 		
@@ -348,16 +423,45 @@ public class EHDesignWizard {
 		for(ClassNode node: classNodes){
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if(method.getThrownExceptions().contains(exceptionClassNode)){			
-					if (method.getCatchedExceptions().contains(exceptionClassNode) == false) {
+				if(method.getThrownExceptions().contains(exceptionClassNode)
+						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false){			
 						mustRaise = true;
-					}
+				}
+			}
+		}
+		return mustRaise;
+	}
+	public boolean cannotRaise(Module module, Class<?> exception){
+		boolean cannotRaise = true;
+		
+		Set<ClassNode> classNodes = new HashSet<ClassNode>();
+		if (module.hasClassTypes()) {
+			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+		}
+
+		if (module.hasPackageNames()) {
+			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+		}
+		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
+		allClassNodes.removeAll(classNodes);
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		}
+		for(ClassNode node: classNodes){
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods) {
+				if(method.getThrownExceptions().contains(exceptionClassNode)
+						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false){			
+						cannotRaise = false;
 				}
 			}
 			
 		}
 		
-		return mustRaise;
+		return cannotRaise;
 	}
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
