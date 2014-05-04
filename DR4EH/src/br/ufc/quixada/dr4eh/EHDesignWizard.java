@@ -25,7 +25,7 @@ public class EHDesignWizard {
 		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
-		module.add("br.ufc.quixada.exception");
+		module.add("br.ufc.quixada.control");
 		//module.add(ContatoDAO.class);
 
 		//if (ehdw.canOnlySignal(module, DAOException.class)) {
@@ -36,9 +36,9 @@ public class EHDesignWizard {
 		//if (ehdw.OnlycanHandle(module, CTLException.class)) {
 		//if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		//if (ehdw.cannotHandle(module, DAOException.class)) {
-		if (ehdw.mustHandle(module, CTLException.class)) {
+		//if (ehdw.mustHandle(module, CTLException.class)) {
 			
-		//if (ehdw.mustRaise(module, DAOException.class)) {
+		if (ehdw.mustRaise(module, DAOException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -149,9 +149,7 @@ public class EHDesignWizard {
 		}
 		
 		return cannotSignal;
-	}
-	
-	
+	}	
 	public boolean mustSignal(Module module, Class<?> exception){
 		boolean mustSignal = false;
 		
@@ -221,7 +219,7 @@ public class EHDesignWizard {
 		}
 		
 		return canOnlyHandle;
-	}
+	}	
 	public boolean OnlycanHandle(Module module, Class<?> exception){
 		boolean OnlycanHandle = true;
 		
@@ -361,10 +359,6 @@ public class EHDesignWizard {
 		
 		return mustRaise;
 	}
-	
-	
-	
-	
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (Class<?> classType : classTypes) {
