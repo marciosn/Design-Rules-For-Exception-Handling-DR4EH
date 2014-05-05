@@ -30,10 +30,10 @@ public class EHDesignWizard {
 		module.add("br.ufc.quixada.control");
 		//module.add(ContatoDAO.class);
 
-		//if (ehdw.canOnlySignal(module, CTLException.class)) {
-		//if (ehdw.OnlycanSignal(module, DAOException.class)) {
+		//if (ehdw.canOnlySignal(module, DAOException.class)) {
+		//if (ehdw.OnlycanSignal(module, CTLException.class)) {
 		//if (ehdw.cannotSignal(module, DAOException.class)) {
-		//if (ehdw.mustSignal(module, DAOException.class)) {
+		//if (ehdw.mustSignal(module, CTLException.class)) {
 		
 		//if (ehdw.canOnlyHandle(module, CTLException.class)) {
 		//if (ehdw.OnlycanHandle(module, CTLException.class)) {
@@ -41,9 +41,9 @@ public class EHDesignWizard {
 		//if (ehdw.mustHandle(module, CTLException.class)) {
 			
 		//if (ehdw.canOnlyRaise(module, CTLException.class)) {
-		//if (ehdw.OnlycanRaise(module, DAOException.class)) {
-		//if (ehdw.cannotRaise(module, CTLException.class)) {
-		if (ehdw.mustRaise(module, CTLException.class)) {
+		//if (ehdw.OnlycanRaise(module, CTLException.class)) {
+		//if (ehdw.cannotRaise(module, DAOException.class)) {
+		if (ehdw.mustRaise(module, DAOException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -363,7 +363,7 @@ public class EHDesignWizard {
 				if(e.size() > 1)
 					return false;
 				if (method.getThrownExceptions().contains(exceptionClassNode)
-						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false) {
+						&& !(method.getCatchedExceptions().contains(exceptionClassNode))) {
 					canOnlyRaise = true;
 				}
 			}
@@ -392,7 +392,7 @@ public class EHDesignWizard {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
 				if (method.getThrownExceptions().contains(exceptionClassNode)
-						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false) {
+						&& !(method.getCatchedExceptions().contains(exceptionClassNode))) {
 					OnlycanRaise = false;
 				}
 			}
@@ -424,7 +424,7 @@ public class EHDesignWizard {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
 				if(method.getThrownExceptions().contains(exceptionClassNode)
-						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false){			
+						&& !(method.getCatchedExceptions().contains(exceptionClassNode))){			
 						mustRaise = true;
 				}
 			}
@@ -454,7 +454,7 @@ public class EHDesignWizard {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
 				if(method.getThrownExceptions().contains(exceptionClassNode)
-						&& (method.getCatchedExceptions().contains(exceptionClassNode))== false){			
+						&& !(method.getCatchedExceptions().contains(exceptionClassNode))){			
 						cannotRaise = false;
 				}
 			}
