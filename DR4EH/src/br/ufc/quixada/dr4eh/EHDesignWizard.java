@@ -10,6 +10,7 @@ import org.designwizard.design.MethodNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
+import br.ufc.quixada.exception.CTLException;
 import br.ufc.quixada.exception.DAOException;
 
 /*
@@ -23,23 +24,23 @@ public class EHDesignWizard {
 		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
-		module.add("br.ufc.quixada.control");
+		module.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
 		// if (ehdw.canOnlySignal(module, DAOException.class)) {
-		// if (ehdw.OnlycanSignal(module, CTLException.class)) {
+		// if (ehdw.onlyCanSignal(module, CTLException.class)) {
 		// if (ehdw.cannotSignal(module, DAOException.class)) {
-		// if (ehdw.mustSignal(module, CTLException.class)) {
+		// if (ehdw.mustSignal(module, DAOException.class)) {
 
-		// if (ehdw.canOnlyHandle(module, CTLException.class)) {
-		// if (ehdw.OnlycanHandle(module, CTLException.class)) {
+		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
+		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
 		// if (ehdw.cannotHandle(module, DAOException.class)) {
-		// if (ehdw.mustHandle(module, CTLException.class)) {
+		// if (ehdw.mustHandle(module, DAOException.class)) {
 
 		// if (ehdw.canOnlyRaise(module, CTLException.class)) {
 		// if (ehdw.OnlycanRaise(module, CTLException.class)) {
-		// if (ehdw.cannotRaise(module, DAOException.class)) {
-		if (ehdw.mustRaise(module, DAOException.class)) {
+		 if (ehdw.cannotRaise(module, CTLException.class)) {
+		// if (ehdw.mustRaise(module, DAOException.class)) {
 			System.out.println("Verdade!");
 		} else {
 			System.out.println("Falso!");
@@ -179,9 +180,7 @@ public class EHDesignWizard {
 					mustSignal = false;
 				}
 			}
-
 		}
-
 		return mustSignal;
 	}
 
@@ -223,7 +222,6 @@ public class EHDesignWizard {
 				}
 			}
 		}
-
 		return canOnlyHandle;
 	}
 
@@ -250,15 +248,11 @@ public class EHDesignWizard {
 		for (ClassNode node : allClassNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (method.getCatchedExceptions().contains(exceptionClassNode)) { // &&
-																					// method.getPackage()!=
-																					// classNodes
+				if (method.getCatchedExceptions().contains(exceptionClassNode)) { 
 					onlyCanHandle = false;
 				}
 			}
-
 		}
-
 		return onlyCanHandle;
 	}
 
@@ -289,9 +283,7 @@ public class EHDesignWizard {
 					cannotHandle = false;
 				}
 			}
-
 		}
-
 		return cannotHandle;
 	}
 
@@ -354,8 +346,8 @@ public class EHDesignWizard {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
 				Set<ClassNode> e = method.getThrownExceptions();
-				if (e.size() > 1)
-					return false;
+				/*if (e.size() > 1)
+					return false;*/
 				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
 					canOnlyRaise = true;
 				}
