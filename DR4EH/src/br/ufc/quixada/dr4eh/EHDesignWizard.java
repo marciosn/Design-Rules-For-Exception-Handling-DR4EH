@@ -24,13 +24,13 @@ public class EHDesignWizard {
 		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
-		module.add("br.ufc.quixada.view");
+		module.add("br.ufc.quixada.control");
 		// module.add(ContatoDAO.class);
 
 		// if (ehdw.canOnlySignal(module, DAOException.class)) {
 		// if (ehdw.onlyCanSignal(module, CTLException.class)) {
 		// if (ehdw.cannotSignal(module, DAOException.class)) {
-		// if (ehdw.mustSignal(module, DAOException.class)) {
+		 if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -39,7 +39,7 @@ public class EHDesignWizard {
 
 		// if (ehdw.canOnlyRaise(module, CTLException.class)) {
 		// if (ehdw.OnlycanRaise(module, CTLException.class)) {
-		 if (ehdw.cannotRaise(module, CTLException.class)) {
+		// if (ehdw.cannotRaise(module, CTLException.class)) {
 		// if (ehdw.mustRaise(module, DAOException.class)) {
 			System.out.println("Verdade!");
 		} else {
@@ -145,6 +145,8 @@ public class EHDesignWizard {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
+				Set<ClassNode> e = method.getThrownExceptions();
+				
 				if (method.getThrownExceptions().contains(exceptionClassNode)) {
 					cannotSignal = false;
 				}
