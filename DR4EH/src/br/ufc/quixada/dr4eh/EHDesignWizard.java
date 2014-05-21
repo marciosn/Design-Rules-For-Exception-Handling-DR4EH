@@ -25,13 +25,13 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.control");
-		module2.add("br.ufc.quixada.view");
+		module.add("br.ufc.quixada.view");
+		module2.add("br.ufc.quixada.control");
 		// module.add(ContatoDAO.class);
 
-		if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
-		// if (ehdw.onlyCanSignal(module, CTLException.class, module2)) {
-		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
+		//if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
+		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
+		 if (ehdw.cannotSignal(module, DAOException.class, module2)) {
 		//if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
@@ -542,7 +542,7 @@ public class EHDesignWizard {
 	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) {
 		boolean cannotSignal = true;
 
-		if (cannotSignal(signalModule, exception)) {
+		if (!cannotSignal(signalModule, exception)) {
 			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 			if (signalModule.hasClassTypes()) {
 				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
