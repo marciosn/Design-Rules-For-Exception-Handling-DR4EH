@@ -24,13 +24,15 @@ public class EHDesignWizard {
 		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
+		Module module2 = new Module();
 		module.add("br.ufc.quixada.control");
+		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
-		// if (ehdw.canOnlySignal(module, DAOException.class)) {
-		// if (ehdw.onlyCanSignal(module, CTLException.class)) {
-		// if (ehdw.cannotSignal(module, DAOException.class)) {
-		 if (ehdw.mustSignal(module, CTLException.class)) {
+		if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
+		// if (ehdw.onlyCanSignal(module, CTLException.class, module2)) {
+		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
+		//if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -450,7 +452,157 @@ public class EHDesignWizard {
 
 		return cannotRaise;
 	}
+	/*
+	 * ********************************************************************************************
+	 * ****************************************RULES M TO N****************************************
+	 * ********************************************************************************************
+	 */
+	public boolean onlyCanSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+		boolean onlyCanSignal = false;
 
+		if (onlyCanSignal(signalModule, exception)) {
+			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
+			if (signalModule.hasClassTypes()) {
+				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+			}
+
+			if (signalModule.hasPackageNames()) {
+				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+			}
+
+			ClassNode exceptionClassNode;
+			try {
+				exceptionClassNode = designWizard.getClass(exception);
+			} catch (InexistentEntityException iee) {
+				throw new RuntimeException(iee);
+			}
+
+			for (ClassNode node : handleClassNodes) {
+				Set<MethodNode> methods = node.getAllMethods();
+				for (MethodNode method : methods) {
+					if (method.getCatchedExceptions().contains(exceptionClassNode)) {
+						onlyCanSignal = true;
+					}
+				}
+			}
+		}
+		return onlyCanSignal;
+
+	}
+	public boolean canOnlySignal(Module signalModule, Class<?> exception, Module handlerModule) {
+		boolean canOnlySignal = true;
+		Set<ClassNode> signalClassNodes = new HashSet<ClassNode>();
+		if (signalModule.hasClassTypes()) {
+			signalClassNodes.addAll(convertClassTypesToClassNodes(signalModule.getClassTypes()));
+		}
+		if (signalModule.hasPackageNames()) {
+			signalClassNodes.addAll(convertPackageNamesToClassNodes(signalModule.getPackageNames()));
+		}
+		Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
+		if (signalModule.hasClassTypes()) {
+			handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+		}
+
+		if (signalModule.hasPackageNames()) {
+			handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+		}
+
+		ClassNode exceptionClassNode;
+		try {
+			exceptionClassNode = designWizard.getClass(exception);
+		} catch (InexistentEntityException iee) {
+			throw new RuntimeException(iee);
+		}
+
+		Set<MethodNode> calleeMethodNodes = new HashSet<MethodNode>();
+
+		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
+					
+		for (ClassNode calleeClassNode : handleClassNodes) {
+		//for (ClassNode calleeClassNode : signalClassNodes) {
+			calleeMethodNodes.addAll(calleeClassNode.getCalleeMethods());
+		}
+
+		for (MethodNode calleeMethodNode : calleeMethodNodes) {
+			if (signalClassNodes.contains(calleeMethodNode.getClassNode())) {
+			//if (handleClassNodes.contains(calleeMethodNode.getClassNode())) {
+				signalMethodNodes.add(calleeMethodNode);
+			}
+		}
+
+		for (MethodNode signalMethodNode : signalMethodNodes) {
+			if (!((signalMethodNode.getThrownExceptions().size() == 1) 
+					&& (signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
+				//return false;
+				canOnlySignal = false;
+			}
+		}
+		return canOnlySignal;
+	}
+	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+		boolean cannotSignal = true;
+
+		if (cannotSignal(signalModule, exception)) {
+			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
+			if (signalModule.hasClassTypes()) {
+				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+			}
+
+			if (signalModule.hasPackageNames()) {
+				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+			}
+
+			ClassNode exceptionClassNode;
+			try {
+				exceptionClassNode = designWizard.getClass(exception);
+			} catch (InexistentEntityException iee) {
+				throw new RuntimeException(iee);
+			}
+
+			for (ClassNode node : handleClassNodes) {
+				Set<MethodNode> methods = node.getAllMethods();
+				for (MethodNode method : methods) {
+					if (method.getCatchedExceptions().contains(exceptionClassNode)) {
+						cannotSignal = false;
+					}
+				}
+			}
+		}
+		return cannotSignal;
+
+	}
+	public boolean mustSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+		boolean mustSignal = true;
+
+		if (mustSignal(signalModule, exception)) {
+			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
+			if (signalModule.hasClassTypes()) {
+				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+			}
+
+			if (signalModule.hasPackageNames()) {
+				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+			}
+
+			ClassNode exceptionClassNode;
+			try {
+				exceptionClassNode = designWizard.getClass(exception);
+			} catch (InexistentEntityException iee) {
+				throw new RuntimeException(iee);
+			}
+
+			for (ClassNode node : handleClassNodes) {
+				Set<MethodNode> methods = node.getAllMethods();
+				for (MethodNode method : methods) {
+					if (!(method.getCatchedExceptions().contains(exceptionClassNode))) {
+						mustSignal = false;
+					}
+				}
+			}
+		}
+		return mustSignal;
+
+	}
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (Class<?> classType : classTypes) {
