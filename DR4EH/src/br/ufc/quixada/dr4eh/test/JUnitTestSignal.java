@@ -23,7 +23,7 @@ public class JUnitTestSignal extends TestCase{
 	}
 	public void testcanOnlySignal_Control_CTL(){
 		module.add("br.ufc.quixada.control");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertTrue(dw.canOnlySignal(module, CTLException.class));
 	}
 	public void testcanOnlySignal_Dao_DAO(){
 		module.add("br.ufc.quixada.dao");
@@ -63,7 +63,7 @@ public class JUnitTestSignal extends TestCase{
 	}
 	public void testOnlycanSignal_Control_CTL(){
 		module.add("br.ufc.quixada.control");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertTrue(dw.canOnlySignal(module, CTLException.class));
 	}
 	public void testOnlycanSignal_Dao_DAO(){
 		module.add("br.ufc.quixada.dao");
@@ -99,7 +99,7 @@ public class JUnitTestSignal extends TestCase{
 	}
 	public void testcannotSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
-		assertFalse(dw.cannotSignal(module, DAOException.class));
+		assertTrue(dw.cannotSignal(module, DAOException.class));
 	}
 	public void testcannotSignal_Control_CTL(){
 		module.add("br.ufc.quixada.control");
@@ -136,5 +136,45 @@ public class JUnitTestSignal extends TestCase{
 	public void testcannotSignal_Exception_CTL(){
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotSignal(module, CTLException.class));
+	}
+	public void testmustSignal_Control_DAO(){
+		module.add("br.ufc.quixada.control");
+		assertFalse(dw.mustSignal(module, DAOException.class));
+	}
+	public void testmustSignal_Control_CTL(){
+		module.add("br.ufc.quixada.control");
+		assertTrue(dw.mustSignal(module, CTLException.class));
+	}
+	public void testmustSignal_Dao_DAO(){
+		module.add("br.ufc.quixada.dao");
+		assertTrue(dw.mustSignal(module, DAOException.class));
+	}
+	public void testmustSignal_Dao_CTL(){
+		module.add("br.ufc.quixada.dao");
+		assertFalse(dw.mustSignal(module, CTLException.class));
+	}
+	public void testmustSignal_Model_DAO(){
+		module.add("br.ufc.quixada.model");
+		assertFalse(dw.mustSignal(module, DAOException.class));
+	}
+	public void testmustSignal_Model_CTL(){
+		module.add("br.ufc.quixada.model");
+		assertFalse(dw.mustSignal(module, CTLException.class));
+	}
+	public void testmustSignal_View_DAO(){
+		module.add("br.ufc.quixada.view");
+		assertFalse(dw.mustSignal(module, DAOException.class));
+	}
+	public void testmustSignal_View_CTL(){
+		module.add("br.ufc.quixada.view");
+		assertFalse(dw.mustSignal(module, CTLException.class));
+	}
+	public void testmustSignal_Exception_DAO(){
+		module.add("br.ufc.quixada.exception");
+		assertFalse(dw.mustSignal(module, DAOException.class));
+	}
+	public void testmustSignal_Exception_CTL(){
+		module.add("br.ufc.quixada.exception");
+		assertFalse(dw.mustSignal(module, CTLException.class));
 	}
 }

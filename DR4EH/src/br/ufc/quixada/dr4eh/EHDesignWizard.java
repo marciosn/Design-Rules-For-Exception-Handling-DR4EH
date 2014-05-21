@@ -25,14 +25,14 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.view");
+		module.add("br.ufc.quixada.exception");
 		module2.add("br.ufc.quixada.control");
 		// module.add(ContatoDAO.class);
 
-		//if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
+		// if (ehdw.canOnlySignal(module, CTLException.class)) {
 		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
-		 if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		//if (ehdw.mustSignal(module, CTLException.class)) {
+		// if (ehdw.cannotSignal(module, DAOException.class)) {
+		 if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -177,11 +177,33 @@ public class EHDesignWizard {
 		} catch (InexistentEntityException iee) {
 			throw new RuntimeException(iee);
 		}
+		int count = 0;
+		int quantidade = 0;
+		for(ClassNode n : classNodes){
+			Set<MethodNode> m = n.getAllMethods();
+			quantidade = m.size();
+			for (MethodNode meth : m) {
+				if(meth.getShortName().equals("<init>()")){
+					count++;
+				}
+			}
+			System.out.println("Quantidade "+quantidade);
+			System.out.println("Numero de metodos sem throws "+count);
+		}
+		if(count == quantidade)
+			System.out.println("IGUAL");
+		
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (!method.getThrownExceptions().contains(exceptionClassNode)) {
-					mustSignal = false;
+				//System.out.println("Quantidade de execeções sinalizadas = "+method.getThrownExceptions().size());
+				//System.out.println("Nome do Metodo = "+method.getShortName());
+				//System.out.println("Tipo = "+method.getReturnType());
+				if(!method.getShortName().equals("<init>()")){
+					//System.out.println("É Igual");
+					if (!method.getThrownExceptions().contains(exceptionClassNode)) {
+						mustSignal = false;
+					}
 				}
 			}
 		}
@@ -457,7 +479,7 @@ public class EHDesignWizard {
 	 * ****************************************RULES M TO N****************************************
 	 * ********************************************************************************************
 	 */
-	public boolean onlyCanSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+	public boolean onlyCanSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
 		boolean onlyCanSignal = false;
 
 		if (onlyCanSignal(signalModule, exception)) {
@@ -519,27 +541,33 @@ public class EHDesignWizard {
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
 					
 		for (ClassNode calleeClassNode : handleClassNodes) {
-		//for (ClassNode calleeClassNode : signalClassNodes) {
 			calleeMethodNodes.addAll(calleeClassNode.getCalleeMethods());
+			//System.out.println(calleeClassNode.getCalleeMethods());
 		}
 
 		for (MethodNode calleeMethodNode : calleeMethodNodes) {
 			if (signalClassNodes.contains(calleeMethodNode.getClassNode())) {
-			//if (handleClassNodes.contains(calleeMethodNode.getClassNode())) {
 				signalMethodNodes.add(calleeMethodNode);
+				//System.out.println("Classe Pertencente "+ calleeMethodNode.getClassNode());
+				//System.out.println("Metodo que Handle Chama em Signal = "+calleeMethodNode);
+				System.out.println("Quantidade de Metodos Chamados = "+signalMethodNodes.size());
 			}
 		}
-
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-			if (!((signalMethodNode.getThrownExceptions().size() == 1) 
-					&& (signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
-				//return false;
-				canOnlySignal = false;
-			}
+			//System.out.println("Nome do metodo que deve sinalizar exceção = "+signalMethodNode.getName());
+			//System.out.println("Quantidade Sinalizada pelo metodo = "+ signalMethodNode.getThrownExceptions().size());
+
+			if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
+			//if ((signalMethodNode.getThrownExceptions().size() == 0)) {
+				System.out.println("O tamanho é 0");
+				return false;
+				//canOnlySignal = false;
+			}else
+				System.out.println("O tamanho é maior que 0");
 		}
 		return canOnlySignal;
 	}
-	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
 		boolean cannotSignal = true;
 
 		if (!cannotSignal(signalModule, exception)) {
