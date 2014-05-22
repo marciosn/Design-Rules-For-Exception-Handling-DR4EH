@@ -52,46 +52,52 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlyRaise(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testOnlycanRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.canOnlyRaise(module, DAOException.class));
 	}
 	public void testOnlycanRaise_Control_CTL(){
 		module.add("br.ufc.quixada.control");
-		assertTrue(dw.canOnlyRaise(module, CTLException.class));
+		assertTrue(dw.onlyCanRaise(module, CTLException.class));
 	}
 	public void testOnlycanRaise_Dao_DAO(){
 		module.add("br.ufc.quixada.dao");
-		assertTrue(dw.canOnlyRaise(module, DAOException.class));
+		assertTrue(dw.onlyCanRaise(module, DAOException.class));
 	}
 	public void testOnlycanRaise_Dao_CTL(){
 		module.add("br.ufc.quixada.dao");
-		assertFalse(dw.canOnlyRaise(module, CTLException.class));
+		assertFalse(dw.onlyCanRaise(module, CTLException.class));
 	}
 	public void testOnlycanRaise_Model_DAO(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlyRaise(module, DAOException.class));
+		assertFalse(dw.onlyCanRaise(module, DAOException.class));
 	}
 	public void testOnlycanRaise_Model_CTL(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlyRaise(module, CTLException.class));
+		assertFalse(dw.onlyCanRaise(module, CTLException.class));
 	}
 	public void testOnlycanRaise_View_DAO(){
 		module.add("br.ufc.quixada.view");
-		assertFalse(dw.canOnlyRaise(module, DAOException.class));
+		assertFalse(dw.onlyCanRaise(module, DAOException.class));
 	}
 	public void testOnlycanRaise_View_CTL(){
 		module.add("br.ufc.quixada.view");
-		assertFalse(dw.canOnlyRaise(module, CTLException.class));
+		assertFalse(dw.onlyCanRaise(module, CTLException.class));
 	}
 	public void testOnlycanRaise_Exception_DAO(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlyRaise(module, DAOException.class));
+		assertFalse(dw.onlyCanRaise(module, DAOException.class));
 	}
 	public void testOnlycanRaise_Exception_CTL(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlyRaise(module, CTLException.class));
+		assertFalse(dw.onlyCanRaise(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testcannotRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertTrue(dw.cannotRaise(module, DAOException.class));
@@ -132,6 +138,9 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotRaise(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testmustRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.mustRaise(module, DAOException.class));

@@ -7,11 +7,7 @@ import br.ufc.quixada.dr4eh.EHDesignWizard;
 import br.ufc.quixada.dr4eh.Module;
 import br.ufc.quixada.exception.CTLException;
 import br.ufc.quixada.exception.DAOException;
-/*
- * 
- * LEMBRAR DE FAZER OS TESTES PARA O MUST
- * 
- * */
+
 
 public class JUnitTestSignal extends TestCase{
 	EHDesignWizard dw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
@@ -57,46 +53,52 @@ public class JUnitTestSignal extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlySignal(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testOnlycanSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
-		assertFalse(dw.canOnlySignal(module, DAOException.class));
+		assertFalse(dw.onlyCanSignal(module, DAOException.class));
 	}
 	public void testOnlycanSignal_Control_CTL(){
 		module.add("br.ufc.quixada.control");
-		assertTrue(dw.canOnlySignal(module, CTLException.class));
+		assertTrue(dw.onlyCanSignal(module, CTLException.class));
 	}
 	public void testOnlycanSignal_Dao_DAO(){
 		module.add("br.ufc.quixada.dao");
-		assertTrue(dw.canOnlySignal(module, DAOException.class));
+		assertTrue(dw.onlyCanSignal(module, DAOException.class));
 	}
 	public void testOnlycanSignal_Dao_CTL(){
 		module.add("br.ufc.quixada.dao");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertFalse(dw.onlyCanSignal(module, CTLException.class));
 	}
 	public void testOnlycanSignal_Model_DAO(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlySignal(module, DAOException.class));
+		assertFalse(dw.onlyCanSignal(module, DAOException.class));
 	}
 	public void testOnlycanSignal_Model_CTL(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertFalse(dw.onlyCanSignal(module, CTLException.class));
 	}
 	public void testOnlycanSignal_View_DAO(){
 		module.add("br.ufc.quixada.view");
-		assertFalse(dw.canOnlySignal(module, DAOException.class));
+		assertFalse(dw.onlyCanSignal(module, DAOException.class));
 	}
 	public void testOnlycanSignal_View_CTL(){
 		module.add("br.ufc.quixada.view");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertFalse(dw.onlyCanSignal(module, CTLException.class));
 	}
 	public void testOnlycanSignal_Exception_DAO(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlySignal(module, DAOException.class));
+		assertFalse(dw.onlyCanSignal(module, DAOException.class));
 	}
 	public void testOnlycanSignal_Exception_CTL(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlySignal(module, CTLException.class));
+		assertFalse(dw.onlyCanSignal(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testcannotSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertTrue(dw.cannotSignal(module, DAOException.class));
@@ -137,6 +139,9 @@ public class JUnitTestSignal extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotSignal(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testmustSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.mustSignal(module, DAOException.class));

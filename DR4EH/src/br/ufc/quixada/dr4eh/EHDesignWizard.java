@@ -25,14 +25,14 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.model");
+		module.add("br.ufc.quixada.view");
 		module2.add("br.ufc.quixada.control");
 		// module.add(ContatoDAO.class);
 
 		// if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
-		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
+		 if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
 		// if (ehdw.cannotSignal(module, DAOException.class)) {
-		 if (ehdw.mustSignal(module, CTLException.class)) {
+		// if (ehdw.mustSignal(module, DAOException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -161,7 +161,6 @@ public class EHDesignWizard {
 
 	public boolean mustSignal(Module module, Class<?> exception) {
 		boolean mustSignal = true;
-		boolean temp = true;
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
@@ -504,6 +503,7 @@ public class EHDesignWizard {
 		return onlyCanSignal;
 
 	}
+	
 	public boolean canOnlySignal(Module signalModule, Class<?> exception, Module handlerModule) {
 		boolean canOnlySignal = true;
 		Set<ClassNode> signalClassNodes = new HashSet<ClassNode>();
@@ -532,10 +532,43 @@ public class EHDesignWizard {
 		Set<MethodNode> calleeMethodNodes = new HashSet<MethodNode>();
 
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
-					
+		
+		/*int count = 0;
+		for(ClassNode node: signalClassNodes){
+			Set<MethodNode> methods = node.getAllMethods();
+			for (MethodNode method : methods) {
+				if(method.getThrownExceptions().contains(exceptionClassNode)){
+					count++;
+				}
+			}
+		}
+		if(count == 0)
+			return false;*/
+		
+		/*for (ClassNode calleeClassNode : handleClassNodes) {
+			Set<MethodNode> methodNodes = calleeClassNode.getAllMethods();
+			for (MethodNode calleeMethodNode : methodNodes) {
+				if (!calleeMethodNode.getCatchedExceptions().contains(exceptionClassNode)) {
+					//System.out.println(calleeMethodNode.getCatchedExceptions());
+					//return false;
+				}
+			}
+		}*/
+		if(!canOnlySignal(signalModule, exception))
+			return false;
+		
+		for (ClassNode calleeClassNode : handleClassNodes) {
+			Set<MethodNode> methodNodes = calleeClassNode.getAllMethods();
+			for (MethodNode calleeMethodNode : methodNodes) {
+				if (!calleeMethodNode.getCatchedExceptions().contains(exceptionClassNode)) {
+					//System.out.println(calleeMethodNode.getCatchedExceptions());
+					//return false;
+				}
+			}
+		}
+		
 		for (ClassNode calleeClassNode : handleClassNodes) {
 			calleeMethodNodes.addAll(calleeClassNode.getCalleeMethods());
-			//System.out.println(calleeClassNode.getCalleeMethods());
 		}
 
 		for (MethodNode calleeMethodNode : calleeMethodNodes) {
@@ -544,16 +577,15 @@ public class EHDesignWizard {
 			}
 		}
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-
 			if(!signalMethodNode.getShortName().equals("<init>()")){
 			if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
 				return false;
-				//canOnlySignal = false;
 				}
 			}
 		}
 		return canOnlySignal;
-	}
+}
+	
 	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
 		boolean cannotSignal = true;
 
@@ -586,6 +618,7 @@ public class EHDesignWizard {
 		return cannotSignal;
 
 	}
+	
 	public boolean mustSignal(Module signalModule, Class<?> exception, Module handlerModule) {
 		boolean mustSignal = true;
 
@@ -618,6 +651,7 @@ public class EHDesignWizard {
 		return mustSignal;
 
 	}
+	
 	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (Class<?> classType : classTypes) {

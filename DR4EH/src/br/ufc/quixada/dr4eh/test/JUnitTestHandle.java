@@ -52,46 +52,52 @@ public class JUnitTestHandle extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlyHandle(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testOnlycanHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertTrue(dw.canOnlyHandle(module, DAOException.class));
 	}
 	public void testOnlycanHandle_Control_CTL(){
 		module.add("br.ufc.quixada.control");
-		assertFalse(dw.canOnlyHandle(module, CTLException.class));
+		assertFalse(dw.onlyCanHandle(module, CTLException.class));
 	}
 	public void testOnlycanHandle_Dao_DAO(){
 		module.add("br.ufc.quixada.dao");
-		assertFalse(dw.canOnlyHandle(module, DAOException.class));
+		assertFalse(dw.onlyCanHandle(module, DAOException.class));
 	}
 	public void testOnlycanHandle_Dao_CTL(){
 		module.add("br.ufc.quixada.dao");
-		assertFalse(dw.canOnlyHandle(module, CTLException.class));
+		assertFalse(dw.onlyCanHandle(module, CTLException.class));
 	}
 	public void testOnlycanHandle_Model_DAO(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlyHandle(module, DAOException.class));
+		assertFalse(dw.onlyCanHandle(module, DAOException.class));
 	}
 	public void testOnlycanHandle_Model_CTL(){
 		module.add("br.ufc.quixada.model");
-		assertFalse(dw.canOnlyHandle(module, CTLException.class));
+		assertFalse(dw.onlyCanHandle(module, CTLException.class));
 	}
 	public void testOnlycanHandle_View_DAO(){
 		module.add("br.ufc.quixada.view");
-		assertFalse(dw.canOnlyHandle(module, DAOException.class));
+		assertFalse(dw.onlyCanHandle(module, DAOException.class));
 	}
 	public void testOnlycanHandle_View_CTL(){
 		module.add("br.ufc.quixada.view");
-		assertTrue(dw.canOnlyHandle(module, CTLException.class));
+		assertTrue(dw.onlyCanHandle(module, CTLException.class));
 	}
 	public void testOnlycanHandle_Exception_DAO(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlyHandle(module, DAOException.class));
+		assertFalse(dw.onlyCanHandle(module, DAOException.class));
 	}
 	public void testOnlycanHandle_Exception_CTL(){
 		module.add("br.ufc.quixada.exception");
-		assertFalse(dw.canOnlyHandle(module, CTLException.class));
+		assertFalse(dw.onlyCanHandle(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testcannotHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.cannotHandle(module, DAOException.class));
@@ -132,6 +138,9 @@ public class JUnitTestHandle extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotHandle(module, CTLException.class));
 	}
+	/*
+	 * ************************************************************************
+	 */
 	public void testmustHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertTrue(dw.mustHandle(module, DAOException.class));
