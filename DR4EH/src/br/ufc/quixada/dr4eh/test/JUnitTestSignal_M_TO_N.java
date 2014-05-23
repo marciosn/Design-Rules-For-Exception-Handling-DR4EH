@@ -24,8 +24,9 @@ public class JUnitTestSignal_M_TO_N extends TestCase{
 	public void testcanOnlySignal_Control_CTL_DAO(){
 		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.dao");
-		assertTrue(dw.canOnlySignal(module, CTLException.class, module2));
+		assertFalse(dw.canOnlySignal(module, CTLException.class, module2));
 	}
+	/*=================================================================================*/
 	public void testcanOnlySignal_Control_DAO_Model(){
 		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.model");
@@ -34,7 +35,7 @@ public class JUnitTestSignal_M_TO_N extends TestCase{
 	public void testcanOnlySignal_Control_CTL_Model(){
 		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.model");
-		assertTrue(dw.canOnlySignal(module, CTLException.class, module2));
+		assertFalse(dw.canOnlySignal(module, CTLException.class, module2));
 	}
 	public void testcanOnlySignal_Control_DAO_View(){
 		module.add("br.ufc.quixada.control");
@@ -54,7 +55,7 @@ public class JUnitTestSignal_M_TO_N extends TestCase{
 	public void testcanOnlySignal_Control_CTL_Exception(){
 		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.exception");
-		assertTrue(dw.canOnlySignal(module, CTLException.class, module2));
+		assertFalse(dw.canOnlySignal(module, CTLException.class, module2));
 	}
 	/*
 	 * ************************************************************************
@@ -72,7 +73,7 @@ public class JUnitTestSignal_M_TO_N extends TestCase{
 	public void testcanOnlySignal_DAO_DAO_Model(){
 		module.add("br.ufc.quixada.dao");
 		module2.add("br.ufc.quixada.model");
-		assertTrue(dw.canOnlySignal(module, DAOException.class, module2));
+		assertFalse(dw.canOnlySignal(module, DAOException.class, module2));
 	}
 	public void testcanOnlySignal_DAO_CTL_Model(){
 		module.add("br.ufc.quixada.dao");

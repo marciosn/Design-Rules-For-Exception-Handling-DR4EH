@@ -29,10 +29,10 @@ public class EHDesignWizard {
 		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
-		// if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
+		 if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
 		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
 		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		 if (ehdw.mustSignal(module, CTLException.class, module2)) {
+		// if (ehdw.mustSignal(module, CTLException.class, module2)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -533,9 +533,14 @@ public class EHDesignWizard {
 
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
 
-		if(!canOnlySignal(signalModule, exception))
+		if(!canOnlySignal(signalModule, exception)){
+			System.out.println("Primeiro IF");
 			return false;
-		
+		}
+		if(!mustHandle(handlerModule, exception)){
+			System.out.println("Segundo IF");
+			return false;
+		}
 		for (ClassNode calleeClassNode : handleClassNodes) {
 			Set<MethodNode> methodNodes = calleeClassNode.getAllMethods();
 			for (MethodNode calleeMethodNode : methodNodes) {
@@ -556,12 +561,17 @@ public class EHDesignWizard {
 			}
 		}
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-			if(!signalMethodNode.getShortName().equals("<init>()")){
+			if(!signalMethodNode.getShortName().equals("<init>()") || !signalMethodNode.getShortName().equals("main(java.lang.String[])")){
+				System.out.println(signalMethodNode.getThrownExceptions().size());
 			if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
-				return false;
+				//return false;
+				canOnlySignal = false;
 				}
+			if(((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))){
+				canOnlySignal = true;
 			}
 		}
+	}
 		return canOnlySignal;
 }
 	
