@@ -12,7 +12,10 @@ import br.ufc.quixada.exception.DAOException;
 public class JUnitTestSignal extends TestCase{
 	EHDesignWizard dw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 	private Module module = new Module();
-
+	/********************************************************************************
+	 *						 RULES CAN ONLY SIGNAL
+	 ********************************************************************************
+	 */
 	public void testcanOnlySignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.canOnlySignal(module, DAOException.class));
@@ -53,8 +56,9 @@ public class JUnitTestSignal extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlySignal(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES ONLY CAN SIGNAL
+	 ********************************************************************************
 	 */
 	public void testOnlycanSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -96,8 +100,9 @@ public class JUnitTestSignal extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.onlyCanSignal(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES CANNOT SIGNAL
+	 ********************************************************************************
 	 */
 	public void testcannotSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -139,8 +144,9 @@ public class JUnitTestSignal extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotSignal(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES MUST SIGNAL
+	 ********************************************************************************
 	 */
 	public void testmustSignal_Control_DAO(){
 		module.add("br.ufc.quixada.control");

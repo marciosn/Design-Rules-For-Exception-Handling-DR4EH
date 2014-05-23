@@ -11,7 +11,10 @@ import junit.framework.TestCase;
 public class JUnitTestHandle extends TestCase{
 	EHDesignWizard dw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 	private Module module = new Module();
-	
+	/********************************************************************************
+	 *						 RULES CAN ONLY HANDLE
+	 ********************************************************************************
+	 */
 	public void testcanOnlyHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertTrue(dw.canOnlyHandle(module, DAOException.class));
@@ -52,8 +55,9 @@ public class JUnitTestHandle extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlyHandle(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES ONLY CAN HANDLE
+	 ********************************************************************************
 	 */
 	public void testOnlycanHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -95,8 +99,9 @@ public class JUnitTestHandle extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.onlyCanHandle(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES CANNOT HANDLE
+	 ********************************************************************************
 	 */
 	public void testcannotHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -138,8 +143,9 @@ public class JUnitTestHandle extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotHandle(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES MUST HANDLE
+	 ********************************************************************************
 	 */
 	public void testmustHandle_Control_DAO(){
 		module.add("br.ufc.quixada.control");

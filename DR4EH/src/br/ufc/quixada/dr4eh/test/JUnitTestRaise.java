@@ -11,7 +11,10 @@ import junit.framework.TestCase;
 public class JUnitTestRaise extends TestCase{
 	EHDesignWizard dw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
 	private Module module = new Module();
-	
+	/********************************************************************************
+	 *						 RULES CAN ONLY RAISE
+	 ********************************************************************************
+	 */
 	public void testcanOnlyRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
 		assertFalse(dw.canOnlyRaise(module, DAOException.class));
@@ -52,8 +55,9 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.canOnlyRaise(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES ONLY CAN RAISE
+	 ********************************************************************************
 	 */
 	public void testOnlycanRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -95,8 +99,9 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertFalse(dw.onlyCanRaise(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES CANNOT RAISE
+	 ********************************************************************************
 	 */
 	public void testcannotRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
@@ -138,8 +143,9 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.exception");
 		assertTrue(dw.cannotRaise(module, CTLException.class));
 	}
-	/*
-	 * ************************************************************************
+	/********************************************************************************
+	 *						 RULES MUST RAISE
+	 ********************************************************************************
 	 */
 	public void testmustRaise_Control_DAO(){
 		module.add("br.ufc.quixada.control");
