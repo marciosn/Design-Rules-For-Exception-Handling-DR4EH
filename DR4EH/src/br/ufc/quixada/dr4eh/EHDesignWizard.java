@@ -25,14 +25,14 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.view");
-		module2.add("br.ufc.quixada.control");
+		module.add("br.ufc.quixada.control");
+		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
-		// if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
-		 if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
-		// if (ehdw.cannotSignal(module, DAOException.class)) {
-		// if (ehdw.mustSignal(module, DAOException.class)) {
+		// if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
+		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
+		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
+		 if (ehdw.mustSignal(module, CTLException.class, module2)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -532,28 +532,7 @@ public class EHDesignWizard {
 		Set<MethodNode> calleeMethodNodes = new HashSet<MethodNode>();
 
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
-		
-		/*int count = 0;
-		for(ClassNode node: signalClassNodes){
-			Set<MethodNode> methods = node.getAllMethods();
-			for (MethodNode method : methods) {
-				if(method.getThrownExceptions().contains(exceptionClassNode)){
-					count++;
-				}
-			}
-		}
-		if(count == 0)
-			return false;*/
-		
-		/*for (ClassNode calleeClassNode : handleClassNodes) {
-			Set<MethodNode> methodNodes = calleeClassNode.getAllMethods();
-			for (MethodNode calleeMethodNode : methodNodes) {
-				if (!calleeMethodNode.getCatchedExceptions().contains(exceptionClassNode)) {
-					//System.out.println(calleeMethodNode.getCatchedExceptions());
-					//return false;
-				}
-			}
-		}*/
+
 		if(!canOnlySignal(signalModule, exception))
 			return false;
 		
@@ -619,10 +598,11 @@ public class EHDesignWizard {
 
 	}
 	
-	public boolean mustSignal(Module signalModule, Class<?> exception, Module handlerModule) {
+	public boolean mustSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
 		boolean mustSignal = true;
 
 		if (mustSignal(signalModule, exception)) {
+			
 			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 			if (signalModule.hasClassTypes()) {
 				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
@@ -631,24 +611,45 @@ public class EHDesignWizard {
 			if (signalModule.hasPackageNames()) {
 				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
 			}
-
+			
 			ClassNode exceptionClassNode;
 			try {
 				exceptionClassNode = designWizard.getClass(exception);
 			} catch (InexistentEntityException iee) {
 				throw new RuntimeException(iee);
 			}
-
-			for (ClassNode node : handleClassNodes) {
+			
+			int count = 0;
+			for(ClassNode node: handleClassNodes){
 				Set<MethodNode> methods = node.getAllMethods();
 				for (MethodNode method : methods) {
-					if (!(method.getCatchedExceptions().contains(exceptionClassNode))) {
-						mustSignal = false;
+					//System.out.println(method.getShortName());
+					if(method.getShortName().equals("<init>()")){
+						count++;
 					}
 				}
 			}
+			if(count > 1)
+				return false;
+			
+			for (ClassNode node : handleClassNodes) {
+				Set<MethodNode> methods = node.getAllMethods();
+				
+				for (MethodNode method : methods) {
+					if(!method.getShortName().equals("<init>()") || !method.getShortName().equals("main(java.lang.String[])")){
+						if (!(method.getCatchedExceptions().contains(exceptionClassNode))) {
+							mustSignal = false;
+						}
+						if(method.getCatchedExceptions().contains(exceptionClassNode))
+							mustSignal = true;
+					}
+				}
+			}
+			return mustSignal;
 		}
-		return mustSignal;
+		else
+			return false;
+		
 
 	}
 	
