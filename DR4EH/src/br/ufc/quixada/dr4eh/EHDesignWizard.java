@@ -534,21 +534,10 @@ public class EHDesignWizard {
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
 
 		if(!canOnlySignal(signalModule, exception)){
-			System.out.println("Primeiro IF");
 			return false;
 		}
 		if(!mustHandle(handlerModule, exception)){
-			System.out.println("Segundo IF");
 			return false;
-		}
-		for (ClassNode calleeClassNode : handleClassNodes) {
-			Set<MethodNode> methodNodes = calleeClassNode.getAllMethods();
-			for (MethodNode calleeMethodNode : methodNodes) {
-				if (!calleeMethodNode.getCatchedExceptions().contains(exceptionClassNode)) {
-					//System.out.println(calleeMethodNode.getCatchedExceptions());
-					//return false;
-				}
-			}
 		}
 		
 		for (ClassNode calleeClassNode : handleClassNodes) {
@@ -561,11 +550,13 @@ public class EHDesignWizard {
 			}
 		}
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-			if(!signalMethodNode.getShortName().equals("<init>()") || !signalMethodNode.getShortName().equals("main(java.lang.String[])")){
-				System.out.println(signalMethodNode.getThrownExceptions().size());
-			if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
-				//return false;
-				canOnlySignal = false;
+			//System.out.println(signalMethodNode.getThrownExceptions().size());
+			//System.out.println(signalMethodNode.getShortName());
+			if(!(signalMethodNode.getShortName().equals("<init>()"))){
+				//System.out.println("Tamanho "+signalMethodNode.getShortName());
+				if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
+					//return false;
+					canOnlySignal = false;
 				}
 			if(((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))){
 				canOnlySignal = true;
