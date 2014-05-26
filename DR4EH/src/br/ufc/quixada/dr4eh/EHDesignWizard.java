@@ -25,14 +25,14 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.exception");
+		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
 		// if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
 		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
 		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		 if (ehdw.mustSignal(module, DAOException.class)) {
+		 if (ehdw.mustSignal(module, CTLException.class, module2)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -609,19 +609,6 @@ public class EHDesignWizard {
 			} catch (InexistentEntityException iee) {
 				throw new RuntimeException(iee);
 			}
-			
-			int count = 0;
-			for(ClassNode node: handleClassNodes){
-				Set<MethodNode> methods = node.getAllMethods();
-				for (MethodNode method : methods) {
-					//System.out.println(method.getShortName());
-					if(method.getShortName().equals("<init>()")){
-						count++;
-					}
-				}
-			}
-			if(count > 1)
-				return false;
 			
 			for (ClassNode node : handleClassNodes) {
 				Set<MethodNode> methods = node.getAllMethods();
