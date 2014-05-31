@@ -25,14 +25,14 @@ public class EHDesignWizard {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.control");
+		module.add("br.ufc.quixada.dao");
 		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
-		// if (ehdw.canOnlySignal(module, CTLException.class, module2)) {
+		 if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
 		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
 		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		 if (ehdw.mustSignal(module, CTLException.class, module2)) {
+		// if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
@@ -62,6 +62,8 @@ public class EHDesignWizard {
 	 * ****************************************RULES SIGNAL****************************************
 	 * ********************************************************************************************
 	 */
+	
+	
 	public boolean canOnlySignal(Module module, Class<?> exception) {
 		boolean canOnlySignal = false;
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
@@ -79,7 +81,6 @@ public class EHDesignWizard {
 		} catch (InexistentEntityException iee) {
 			throw new RuntimeException(iee);
 		}
-
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
@@ -92,7 +93,6 @@ public class EHDesignWizard {
 				}
 			}
 		}
-
 		return canOnlySignal;
 	}
 
@@ -146,9 +146,7 @@ public class EHDesignWizard {
 		}
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
-			for (MethodNode method : methods) {
-				Set<ClassNode> e = method.getThrownExceptions();
-				
+			for (MethodNode method : methods) {				
 				if (method.getThrownExceptions().contains(exceptionClassNode)) {
 					cannotSignal = false;
 				}
@@ -540,16 +538,12 @@ public class EHDesignWizard {
 			}
 		}
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-			//System.out.println(signalMethodNode.getThrownExceptions().size());
-			//System.out.println(signalMethodNode.getShortName());
 			if(!(signalMethodNode.getShortName().equals("<init>()"))){
-				//System.out.println("Tamanho "+signalMethodNode.getShortName());
 				if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
-					//return false;
 					canOnlySignal = false;
 				}
-			if(((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))){
-				canOnlySignal = true;
+				if(((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))){
+					canOnlySignal = true;
 			}
 		}
 	}
