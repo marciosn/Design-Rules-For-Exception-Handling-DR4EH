@@ -16,12 +16,12 @@ import br.ufc.quixada.exception.DAOException;
 /*
  * https://github.com/marciosn/DesignRulesForExceptionHandling.git
  */
-public class EHDesignWizard {
+public class DR4EH {
 
 	private DesignWizard designWizard;
 
 	public static void main(String[] args) throws IOException {
-		EHDesignWizard ehdw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
+		DR4EH ehdw = new DR4EH("lib" + File.separator + "iContatos.jar");
 
 		Module module = new Module();
 		Module module2 = new Module();
@@ -49,7 +49,7 @@ public class EHDesignWizard {
 		}
 	}
 
-	public EHDesignWizard(String appJarPath) {
+	public DR4EH(String appJarPath) {
 		try {
 			designWizard = new DesignWizard(appJarPath);
 		} catch (IOException ioe) {

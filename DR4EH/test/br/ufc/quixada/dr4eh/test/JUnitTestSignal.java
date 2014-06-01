@@ -3,14 +3,14 @@ package br.ufc.quixada.dr4eh.test;
 import java.io.File;
 
 import junit.framework.TestCase;
-import br.ufc.quixada.dr4eh.EHDesignWizard;
+import br.ufc.quixada.dr4eh.DR4EH;
 import br.ufc.quixada.dr4eh.Module;
 import br.ufc.quixada.exception.CTLException;
 import br.ufc.quixada.exception.DAOException;
 
 
 public class JUnitTestSignal extends TestCase{
-	EHDesignWizard dw = new EHDesignWizard("lib" + File.separator + "iContatos.jar");
+	DR4EH dw = new DR4EH("lib" + File.separator + "iContatos.jar");
 	private Module module = new Module();
 	/********************************************************************************
 	 *						 RULES CAN ONLY SIGNAL
