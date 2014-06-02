@@ -25,14 +25,14 @@ public class DR4EH {
 
 		Module module = new Module();
 		Module module2 = new Module();
-		module.add("br.ufc.quixada.dao");
+		module.add("br.ufc.quixada.control");
 		module2.add("br.ufc.quixada.view");
 		// module.add(ContatoDAO.class);
 
-		 if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
+		// if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
 		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
 		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		// if (ehdw.mustSignal(module, CTLException.class)) {
+		 if (ehdw.mustSignal(module, CTLException.class)) {
 
 		// if (ehdw.canOnlyHandle(module, DAOException.class)) {
 		// if (ehdw.onlyCanHandle(module, DAOException.class)) {
