@@ -11,7 +11,6 @@ import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
 import br.ufc.quixada.exception.CTLException;
-import br.ufc.quixada.exception.DAOException;
 
 /*
  * https://github.com/marciosn/DesignRulesForExceptionHandling.git
@@ -73,8 +72,6 @@ public class DR4EH {
 		if (module.hasPackageNames()) {
 			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
 		}
-		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
-		allClassNodes.removeAll(classNodes);
 		ClassNode exceptionClassNode;
 		try {
 			exceptionClassNode = designWizard.getClass(exception);
@@ -351,9 +348,6 @@ public class DR4EH {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				Set<ClassNode> e = method.getThrownExceptions();
-				/*if (e.size() > 1)
-					return false;*/
 				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
 					canOnlyRaise = true;
 				}
