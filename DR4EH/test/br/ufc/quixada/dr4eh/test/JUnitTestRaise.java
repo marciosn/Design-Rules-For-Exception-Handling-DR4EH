@@ -171,7 +171,7 @@ public class JUnitTestRaise extends TestCase{
 		module.add("br.ufc.quixada.model");
 		assertFalse(dw.mustRaise(module, CTLException.class));
 	}
-	public void testmustHandle_View_DAO(){
+	public void testmustRaise_View_DAO(){
 		module.add("br.ufc.quixada.view");
 		assertFalse(dw.mustRaise(module, DAOException.class));
 	}
