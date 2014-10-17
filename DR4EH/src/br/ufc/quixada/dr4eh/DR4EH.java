@@ -9,9 +9,56 @@ import org.designwizard.design.MethodNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
+<<<<<<< HEAD
+=======
+import br.ufc.quixada.exception.CTLException;
+
+/*
+ * https://github.com/marciosn/DesignRulesForExceptionHandling.git
+ */
+
+/**
+ * 
+ * 
+ * @author Márcio de Souza Nobre
+ */
+>>>>>>> refs/remotes/origin/master
 public class DR4EH {
 
 	private DesignWizard designWizard;
+<<<<<<< HEAD
+=======
+
+	public static void main(String[] args) throws IOException {
+		DR4EH ehdw = new DR4EH("lib" + File.separator + "iContatos.jar");
+
+		Module module = new Module();
+		Module module2 = new Module();
+		module.add("br.ufc.quixada.control");
+		module2.add("br.ufc.quixada.view");
+		// module.add(ContatoDAO.class);
+
+		// if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
+		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
+		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
+		if (ehdw.mustSignal(module, CTLException.class)) {
+
+			// if (ehdw.canOnlyHandle(module, DAOException.class)) {
+			// if (ehdw.onlyCanHandle(module, DAOException.class)) {
+			// if (ehdw.cannotHandle(module, DAOException.class)) {
+			// if (ehdw.mustHandle(module, DAOException.class)) {
+
+			// if (ehdw.canOnlyRaise(module, CTLException.class)) {
+			// if (ehdw.OnlycanRaise(module, CTLException.class)) {
+			// if (ehdw.cannotRaise(module, CTLException.class)) {
+			// if (ehdw.mustRaise(module, DAOException.class)) {
+			System.out.println("Verdade!");
+		} else {
+			System.out.println("Falso!");
+		}
+	}
+
+>>>>>>> refs/remotes/origin/master
 	public DR4EH(String appJarPath) {
 		try {
 			designWizard = new DesignWizard(appJarPath);
@@ -22,22 +69,23 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES SIGNAL****************************************
-	 * ********************************************************************************************
+	 * ****************************************RULES
+	 * SIGNAL****************************************
+	 * ***************************
+	 * *****************************************************************
 	 */
-	
-	
+
 	public boolean canOnlySignal(Module module, Class<?> exception) {
 		boolean canOnlySignal = false;
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
-		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
-		allClassNodes.removeAll(classNodes);
 		ClassNode exceptionClassNode;
 		try {
 			exceptionClassNode = designWizard.getClass(exception);
@@ -64,10 +112,12 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -94,11 +144,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 
 		ClassNode exceptionClassNode;
@@ -109,7 +161,7 @@ public class DR4EH {
 		}
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
-			for (MethodNode method : methods) {				
+			for (MethodNode method : methods) {
 				if (method.getThrownExceptions().contains(exceptionClassNode)) {
 					cannotSignal = false;
 				}
@@ -125,11 +177,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 
 		ClassNode exceptionClassNode;
@@ -138,15 +192,15 @@ public class DR4EH {
 		} catch (InexistentEntityException iee) {
 			throw new RuntimeException(iee);
 		}
-		
+
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-					if (!method.getThrownExceptions().contains(exceptionClassNode)) {
-						mustSignal = false;
-					}
-					if (method.getThrownExceptions().contains(exceptionClassNode)) {
-						mustSignal = true;
+				if (!method.getThrownExceptions().contains(exceptionClassNode)) {
+					mustSignal = false;
+				}
+				if (method.getThrownExceptions().contains(exceptionClassNode)) {
+					mustSignal = true;
 				}
 			}
 		}
@@ -155,8 +209,10 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES HANDLE****************************************
-	 * ********************************************************************************************
+	 * ****************************************RULES
+	 * HANDLE****************************************
+	 * ***************************
+	 * *****************************************************************
 	 */
 
 	public boolean canOnlyHandle(Module module, Class<?> exception) {
@@ -164,11 +220,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
@@ -199,11 +257,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
@@ -217,7 +277,7 @@ public class DR4EH {
 		for (ClassNode node : allClassNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (method.getCatchedExceptions().contains(exceptionClassNode)) { 
+				if (method.getCatchedExceptions().contains(exceptionClassNode)) {
 					onlyCanHandle = false;
 				}
 			}
@@ -230,11 +290,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
@@ -261,11 +323,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -290,18 +354,22 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES RAISE*****************************************
-	 * ********************************************************************************************
+	 * ****************************************RULES
+	 * RAISE*****************************************
+	 * ***************************
+	 * *****************************************************************
 	 */
 	public boolean canOnlyRaise(Module module, Class<?> exception) {
 		boolean canOnlyRaise = false;
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -314,7 +382,13 @@ public class DR4EH {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
+<<<<<<< HEAD
 				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
+=======
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& !(method.getCatchedExceptions()
+								.contains(exceptionClassNode))) {
+>>>>>>> refs/remotes/origin/master
 					canOnlyRaise = true;
 				}
 			}
@@ -327,10 +401,12 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -343,7 +419,9 @@ public class DR4EH {
 		for (ClassNode node : allClassNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& !(method.getCatchedExceptions()
+								.contains(exceptionClassNode))) {
 					onlyCanRaise = false;
 				}
 			}
@@ -358,11 +436,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -375,7 +455,9 @@ public class DR4EH {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& !(method.getCatchedExceptions()
+								.contains(exceptionClassNode))) {
 					mustRaise = true;
 				}
 			}
@@ -388,11 +470,13 @@ public class DR4EH {
 
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		if (module.hasClassTypes()) {
-			classNodes.addAll(convertClassTypesToClassNodes(module.getClassTypes()));
+			classNodes.addAll(convertClassTypesToClassNodes(module
+					.getClassTypes()));
 		}
 
 		if (module.hasPackageNames()) {
-			classNodes.addAll(convertPackageNamesToClassNodes(module.getPackageNames()));
+			classNodes.addAll(convertPackageNamesToClassNodes(module
+					.getPackageNames()));
 		}
 		Set<ClassNode> allClassNodes = designWizard.getAllClasses();
 		allClassNodes.removeAll(classNodes);
@@ -405,7 +489,9 @@ public class DR4EH {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
-				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
+				if (method.getThrownExceptions().contains(exceptionClassNode)
+						&& !(method.getCatchedExceptions()
+								.contains(exceptionClassNode))) {
 					cannotRaise = false;
 				}
 			}
@@ -414,22 +500,30 @@ public class DR4EH {
 
 		return cannotRaise;
 	}
+
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES M TO N****************************************
-	 * ********************************************************************************************
+	 * ****************************************RULES M TO
+	 * N****************************************
+	 * ********************************
+	 * ************************************************************
 	 */
-	public boolean onlyCanSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
+	public boolean onlyCanSignal(Module signalModule, Class<?> exception,
+			Module handlerModule) { // FUNCIONANDO
 		boolean onlyCanSignal = false;
 
 		if (onlyCanSignal(signalModule, exception)) {
 			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 			if (signalModule.hasClassTypes()) {
-				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+				handleClassNodes
+						.addAll(convertClassTypesToClassNodes(handlerModule
+								.getClassTypes()));
 			}
 
 			if (signalModule.hasPackageNames()) {
-				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+				handleClassNodes
+						.addAll(convertPackageNamesToClassNodes(handlerModule
+								.getPackageNames()));
 			}
 
 			ClassNode exceptionClassNode;
@@ -442,7 +536,8 @@ public class DR4EH {
 			for (ClassNode node : handleClassNodes) {
 				Set<MethodNode> methods = node.getAllMethods();
 				for (MethodNode method : methods) {
-					if (method.getCatchedExceptions().contains(exceptionClassNode)) {
+					if (method.getCatchedExceptions().contains(
+							exceptionClassNode)) {
 						onlyCanSignal = true;
 					}
 				}
@@ -451,23 +546,30 @@ public class DR4EH {
 		return onlyCanSignal;
 
 	}
-	
-	public boolean canOnlySignal(Module signalModule, Class<?> exception, Module handlerModule) {
+
+	public boolean canOnlySignal(Module signalModule, Class<?> exception,
+			Module handlerModule) {
 		boolean canOnlySignal = true;
 		Set<ClassNode> signalClassNodes = new HashSet<ClassNode>();
 		if (signalModule.hasClassTypes()) {
-			signalClassNodes.addAll(convertClassTypesToClassNodes(signalModule.getClassTypes()));
+			signalClassNodes.addAll(convertClassTypesToClassNodes(signalModule
+					.getClassTypes()));
 		}
 		if (signalModule.hasPackageNames()) {
-			signalClassNodes.addAll(convertPackageNamesToClassNodes(signalModule.getPackageNames()));
+			signalClassNodes
+					.addAll(convertPackageNamesToClassNodes(signalModule
+							.getPackageNames()));
 		}
 		Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 		if (signalModule.hasClassTypes()) {
-			handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+			handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule
+					.getClassTypes()));
 		}
 
 		if (signalModule.hasPackageNames()) {
-			handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+			handleClassNodes
+					.addAll(convertPackageNamesToClassNodes(handlerModule
+							.getPackageNames()));
 		}
 
 		ClassNode exceptionClassNode;
@@ -481,13 +583,13 @@ public class DR4EH {
 
 		Set<MethodNode> signalMethodNodes = new HashSet<MethodNode>();
 
-		if(!canOnlySignal(signalModule, exception)){
+		if (!canOnlySignal(signalModule, exception)) {
 			return false;
 		}
-		if(!mustHandle(handlerModule, exception)){
+		if (!mustHandle(handlerModule, exception)) {
 			return false;
 		}
-		
+
 		for (ClassNode calleeClassNode : handleClassNodes) {
 			calleeMethodNodes.addAll(calleeClassNode.getCalleeMethods());
 		}
@@ -498,29 +600,36 @@ public class DR4EH {
 			}
 		}
 		for (MethodNode signalMethodNode : signalMethodNodes) {
-			if(!(signalMethodNode.getShortName().equals("<init>()"))){
-				if (!((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))) {
+			if (!(signalMethodNode.getShortName().equals("<init>()"))) {
+				if (!((signalMethodNode.getThrownExceptions().size() == 1) && (signalMethodNode
+						.getThrownExceptions().contains(exceptionClassNode)))) {
 					canOnlySignal = false;
 				}
-				if(((signalMethodNode.getThrownExceptions().size() == 1)&&(signalMethodNode.getThrownExceptions().contains(exceptionClassNode)))){
+				if (((signalMethodNode.getThrownExceptions().size() == 1) && (signalMethodNode
+						.getThrownExceptions().contains(exceptionClassNode)))) {
 					canOnlySignal = true;
+				}
 			}
 		}
-	}
 		return canOnlySignal;
-}
-	
-	public boolean cannotSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
+	}
+
+	public boolean cannotSignal(Module signalModule, Class<?> exception,
+			Module handlerModule) { // FUNCIONANDO
 		boolean cannotSignal = true;
 
 		if (!cannotSignal(signalModule, exception)) {
 			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 			if (signalModule.hasClassTypes()) {
-				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+				handleClassNodes
+						.addAll(convertClassTypesToClassNodes(handlerModule
+								.getClassTypes()));
 			}
 
 			if (signalModule.hasPackageNames()) {
-				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+				handleClassNodes
+						.addAll(convertPackageNamesToClassNodes(handlerModule
+								.getPackageNames()));
 			}
 
 			ClassNode exceptionClassNode;
@@ -533,7 +642,8 @@ public class DR4EH {
 			for (ClassNode node : handleClassNodes) {
 				Set<MethodNode> methods = node.getAllMethods();
 				for (MethodNode method : methods) {
-					if (method.getCatchedExceptions().contains(exceptionClassNode)) {
+					if (method.getCatchedExceptions().contains(
+							exceptionClassNode)) {
 						cannotSignal = false;
 					}
 				}
@@ -542,50 +652,58 @@ public class DR4EH {
 		return cannotSignal;
 
 	}
-	
-	public boolean mustSignal(Module signalModule, Class<?> exception, Module handlerModule) { // FUNCIONANDO
+
+	public boolean mustSignal(Module signalModule, Class<?> exception,
+			Module handlerModule) { // FUNCIONANDO
 		boolean mustSignal = true;
 
 		if (mustSignal(signalModule, exception)) {
-			
+
 			Set<ClassNode> handleClassNodes = new HashSet<ClassNode>();
 			if (signalModule.hasClassTypes()) {
-				handleClassNodes.addAll(convertClassTypesToClassNodes(handlerModule.getClassTypes()));
+				handleClassNodes
+						.addAll(convertClassTypesToClassNodes(handlerModule
+								.getClassTypes()));
 			}
 
 			if (signalModule.hasPackageNames()) {
-				handleClassNodes.addAll(convertPackageNamesToClassNodes(handlerModule.getPackageNames()));
+				handleClassNodes
+						.addAll(convertPackageNamesToClassNodes(handlerModule
+								.getPackageNames()));
 			}
-			
+
 			ClassNode exceptionClassNode;
 			try {
 				exceptionClassNode = designWizard.getClass(exception);
 			} catch (InexistentEntityException iee) {
 				throw new RuntimeException(iee);
 			}
-			
+
 			for (ClassNode node : handleClassNodes) {
 				Set<MethodNode> methods = node.getAllMethods();
-				
+
 				for (MethodNode method : methods) {
-					if(!method.getShortName().equals("<init>()") || !method.getShortName().equals("main(java.lang.String[])")){
-						if (!(method.getCatchedExceptions().contains(exceptionClassNode))) {
+					if (!method.getShortName().equals("<init>()")
+							|| !method.getShortName().equals(
+									"main(java.lang.String[])")) {
+						if (!(method.getCatchedExceptions()
+								.contains(exceptionClassNode))) {
 							mustSignal = false;
 						}
-						if(method.getCatchedExceptions().contains(exceptionClassNode))
+						if (method.getCatchedExceptions().contains(
+								exceptionClassNode))
 							mustSignal = true;
 					}
 				}
 			}
 			return mustSignal;
-		}
-		else
+		} else
 			return false;
-		
 
 	}
-	
-	private Set<ClassNode> convertClassTypesToClassNodes(Set<Class<?>> classTypes) {
+
+	private Set<ClassNode> convertClassTypesToClassNodes(
+			Set<Class<?>> classTypes) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (Class<?> classType : classTypes) {
 			try {
@@ -597,11 +715,13 @@ public class DR4EH {
 		return classNodes;
 	}
 
-	private Set<ClassNode> convertPackageNamesToClassNodes(Set<String> packageNames) {
+	private Set<ClassNode> convertPackageNamesToClassNodes(
+			Set<String> packageNames) {
 		Set<ClassNode> classNodes = new HashSet<ClassNode>();
 		for (String packageName : packageNames) {
 			try {
-				classNodes.addAll(designWizard.getPackage(packageName).getAllClasses());
+				classNodes.addAll(designWizard.getPackage(packageName)
+						.getAllClasses());
 			} catch (InexistentEntityException iee) {
 				throw new RuntimeException(iee);
 			}
