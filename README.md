@@ -1,8 +1,7 @@
 Design Rules For Exception Handling
 ===================================
 
-A Design Rules For Exception Handling é uma API Java para verificação de conformação de Regras de design de tratamento de exceção,
-ela possibilita a verificação automatizada em código fonte Java.
+A Design Rules For Exception Handling é uma API Java para verificação de conformação de Regras de design de tratamento de exceção que possibilita a verificação automatizada em código fonte Java.
 
 Seu uso é bastante simples, basta adicionar o jar da DR4EH ao classpath do projeto e para instância-la é necessário passar o
 caminho para o .jar da aplicação que será testada, uma vez feito isso, os métodos da API ja podem ser chamados, para realizar o
