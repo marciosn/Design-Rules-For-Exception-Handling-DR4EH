@@ -13,7 +13,6 @@ A seguir a maneira de instanciação e uso da API.
 
 <img src="http://i.imgbox.com/iKvHTA1J.png" alt="Como usar DR4EH">
 
-A DR4EH atiliza outra API Java de código aberto, a Design Wizards, ela oferece serviços para adquirir informações sobre o código
-fonte.
+A DR4EH utiliza outra API Java de código aberto, a Design Wizards. Ela é responsável por oferecer meios para adquirir informações sobre o código fonte.
 
 Link site: https://sites.google.com/site/designwizardhomepage/
