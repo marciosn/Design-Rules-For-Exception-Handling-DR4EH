@@ -1,5 +1,6 @@
 package br.ufc.quixada.dr4eh;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,11 +10,14 @@ import org.designwizard.design.MethodNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
+import br.ufc.quixada.exception.CTLException;
+
+
 /*
  * @author Márcio de Souza Nobre
  */
-public class DR4EH {
 
+public class DR4EH {
 	private DesignWizard designWizard;
 
 	public DR4EH(String appJarPath) {
@@ -333,13 +337,16 @@ public class DR4EH {
 		for (ClassNode node : classNodes) {
 			Set<MethodNode> methods = node.getAllMethods();
 			for (MethodNode method : methods) {
+				if (method.getThrownExceptions().contains(exceptionClassNode) && !(method.getCatchedExceptions().contains(exceptionClassNode))) {
 				if (method.getThrownExceptions().contains(exceptionClassNode)
 						&& !(method.getCatchedExceptions()
 								.contains(exceptionClassNode))) {
+
 					canOnlyRaise = true;
 				}
 			}
 		}
+	}
 		return canOnlyRaise;
 	}
 
