@@ -1,6 +1,5 @@
 package br.ufc.quixada.dr4eh;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +8,6 @@ import org.designwizard.design.ClassNode;
 import org.designwizard.design.MethodNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
-
-import br.ufc.quixada.exception.CTLException;
 
 
 /*
