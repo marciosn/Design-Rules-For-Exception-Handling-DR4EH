@@ -1,6 +1,5 @@
 package br.ufc.quixada.dr4eh;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,49 +9,12 @@ import org.designwizard.design.MethodNode;
 import org.designwizard.exception.InexistentEntityException;
 import org.designwizard.main.DesignWizard;
 
-import br.ufc.quixada.exception.CTLException;
-
 /*
- * https://github.com/marciosn/DesignRulesForExceptionHandling.git
- */
-
-/**
- * 
- * 
  * @author Márcio de Souza Nobre
  */
 public class DR4EH {
 
 	private DesignWizard designWizard;
-
-	public static void main(String[] args) throws IOException {
-		DR4EH ehdw = new DR4EH("lib" + File.separator + "iContatos.jar");
-
-		Module module = new Module();
-		Module module2 = new Module();
-		module.add("br.ufc.quixada.control");
-		module2.add("br.ufc.quixada.view");
-		// module.add(ContatoDAO.class);
-
-		// if (ehdw.canOnlySignal(module, DAOException.class, module2)) {
-		// if (ehdw.onlyCanSignal(module, DAOException.class, module2)) {
-		// if (ehdw.cannotSignal(module, DAOException.class, module2)) {
-		if (ehdw.mustSignal(module, CTLException.class)) {
-
-			// if (ehdw.canOnlyHandle(module, DAOException.class)) {
-			// if (ehdw.onlyCanHandle(module, DAOException.class)) {
-			// if (ehdw.cannotHandle(module, DAOException.class)) {
-			// if (ehdw.mustHandle(module, DAOException.class)) {
-
-			// if (ehdw.canOnlyRaise(module, CTLException.class)) {
-			// if (ehdw.OnlycanRaise(module, CTLException.class)) {
-			// if (ehdw.cannotRaise(module, CTLException.class)) {
-			// if (ehdw.mustRaise(module, DAOException.class)) {
-			System.out.println("Verdade!");
-		} else {
-			System.out.println("Falso!");
-		}
-	}
 
 	public DR4EH(String appJarPath) {
 		try {
@@ -64,10 +26,8 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES
-	 * SIGNAL****************************************
-	 * ***************************
-	 * *****************************************************************
+	 * ****************************************RULES SIGNAL****************************************
+	 * ********************************************************************************************
 	 */
 
 	public boolean canOnlySignal(Module module, Class<?> exception) {
@@ -204,10 +164,8 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES
-	 * HANDLE****************************************
-	 * ***************************
-	 * *****************************************************************
+	 * ****************************************RULES HANDLE****************************************
+	 * ********************************************************************************************
 	 */
 
 	public boolean canOnlyHandle(Module module, Class<?> exception) {
@@ -349,10 +307,8 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES
-	 * RAISE*****************************************
-	 * ***************************
-	 * *****************************************************************
+	 * ****************************************RULES RAISE*****************************************
+	 * ********************************************************************************************
 	 */
 	public boolean canOnlyRaise(Module module, Class<?> exception) {
 		boolean canOnlyRaise = false;
@@ -494,10 +450,8 @@ public class DR4EH {
 
 	/*
 	 * ********************************************************************************************
-	 * ****************************************RULES M TO
-	 * N****************************************
-	 * ********************************
-	 * ************************************************************
+	 * ****************************************RULES M TO N****************************************
+	 * ********************************************************************************************
 	 */
 	public boolean onlyCanSignal(Module signalModule, Class<?> exception,
 			Module handlerModule) { // FUNCIONANDO
