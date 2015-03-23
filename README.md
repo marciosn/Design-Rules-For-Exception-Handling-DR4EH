@@ -16,3 +16,6 @@ A seguir a maneira de instanciação e uso da API.
 A DR4EH utiliza outra API Java de código aberto, a Design Wizards. Ela é responsável por oferecer meios para adquirir informações sobre o código fonte.
 
 Link site: https://sites.google.com/site/designwizardhomepage/
+
+
+http://marciosn.github.io/DesignRulesForExceptionHandling/
