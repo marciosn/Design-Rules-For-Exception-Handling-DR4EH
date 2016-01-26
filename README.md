@@ -18,4 +18,4 @@ A DR4EH utiliza outra API Java de código aberto, a Design Wizards. Ela é respo
 Link site: https://sites.google.com/site/designwizardhomepage/
 
 
-http://marciosn.github.io/DesignRulesForExceptionHandling/
+http://marciosn.github.io/Design-Rules-For-Exception-Handling-DR4EH/
